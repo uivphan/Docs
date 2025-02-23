@@ -1,4 +1,4 @@
-## Setting Up FabricPool Client To Tier to ONTAP S3
+## Setting Up FabricPool Client To Tier to ONTAP S3 
 
 #### Notes
 * S3 LIF on the S3 Object Store Server cannot have any other data services on the policy except for data-s3-server and data-core-services.
