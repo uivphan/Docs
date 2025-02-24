@@ -199,9 +199,16 @@ event log show -message-name ktls.*
 storage aggregate object-store config modify -object-store-name <name> -is-certificate-validation-enable false
 ```
 			 
-#### Commands for Monitoring
+#### Commands for Monitoring Performance
 ```
-qos statistics volume latency show*** - check the Cloud column for latency  
+qos statistics volume latency show*** - check the Cloud column for latency
+node run -node nodename -command sysstat 1
+set diag; node run -node * "wafl composite stats show"
+set diag; node run -node * "wafl composite stats counter show FPAGGR"
+set diag; node run -node * "wafl cloudio_stats"
+set diag; statistics show -object object_store_client_conn -instance *
+set diag; statistics show -object object_store_client_op -instance * -raw
+statistics show -object ktls_global -instance ktls_global -raw
 ```
 
 #### Things That Could Create Performance Issues
@@ -224,6 +231,11 @@ event log show -messagename fp.est.scan.catalog.updated -nodename nodename
 event log show -messagename wafl.scan.* -nodename nodename -event *volname*
 
 - Can try changing the tiering policy to all and then trigger the tiering command.  Once confirmed it is tiering, change it back to default.
+
+- Check space usage
+df -aggregates -composite -aggregate aggrname
+volume show-footprint
+aggregate show-space
 ```
 
 #### Other Misc Notes
