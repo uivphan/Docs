@@ -50,4 +50,4 @@
 * Use a guest owned file system or RDM (Raw Device Mapping) if recommended for the guest application
 * if enabling encryption, use NetApp (not vSphere) encryption
 * Storage Distributed Resource Scheduler (DRS - moves VMs around to balance the load across the available datastores) should be set to manual if enabled.  Moves can lose efficiency benefits and lock space in snapshot copies.
-  - For SAN, use consistency groups if applications require high data integrity across multiple VMs
+* For SAN, use consistency groups if applications require high data integrity across multiple VMs
