@@ -1,4 +1,4 @@
-## Setting Up FabricPool Client To Tier to ONTAP S3 
+## Setting Up FabricPool Client To Tier to ONTAP S3
 
 #### Notes
 * S3 LIF on the S3 Object Store Server cannot have any other data services on the policy except for data-s3-server and data-core-services.
@@ -197,4 +197,38 @@ event log show -message-name ktls.*
 
 - If issues with Certificates, run the following command to disable certificate verification:
 storage aggregate object-store config modify -object-store-name <name> -is-certificate-validation-enable false
+```
+			 
+#### Commands for Monitoring
+```
+qos statistics volume latency show*** - check the Cloud column for latency  
+```
+
+#### Things That Could Create Performance Issues
+* Security scanners like Windows AV, man-in-the-middle device such as WAF or DEP that are reading data stored in a FabricPool can pull large amounts of data from the capacity tier (cold storage) causing resource contention on the node.
+
+#### Troubleshooting Tiering Issues
+```
+- Check the tiering policy.  It could be that there isn't any inactive data based on the time specified in the tiering policy.  Tiering policy needs to be set to none for FabricPool attached aggregates to be able to report inactive data.  Changing the tiering policy to none will report the amount of the entire volume that is inactive for at least 31 days.  For the other policies, inactive data will not be reported.
+volume modify -vserver svm -volume volumename -tiering-policy none
+volume show -vserver svm -volume volumename -fields  performance-tier-inactive-user-data,performance-tier-inactive-user-data-percent
+	
+- Manually trigger the scan.  This command triggers a tiering and retrieve scan. Tiering and retrieval behavior is driven by the tiering and cloud retrieve policy settings on the volume. The cloud retrieval policy must be set to promote to enable scanner based retrieval.
+volume object-store tiering trigger
+vserver object-store-server bucket show -fields object-count -> run this on the object store server
+volume object-store tiering show
+storage aggregate object-store show -fields object-store-availability,object-store-unavailable-reason
+
+- Check EMS messages to see if there are any tiering error messages
+event log show -messagename fp.est.scan.catalog.updated -nodename nodename
+event log show -messagename wafl.scan.* -nodename nodename -event *volname*
+
+- Can try changing the tiering policy to all and then trigger the tiering command.  Once confirmed it is tiering, change it back to default.
+```
+
+#### Other Misc Notes
+```
+- When deleting and detaching aggregate, can use the below command to verify aggr has been fully removed.
+  storage aggregate object-store show-freeing-status
+- When moving volumes to free up the aggregate, do not delete the aggregate until the scanners have completed.  Even though the aggregate may not contain any volumes, WAFL is still running scanners in the background.
 ```
