@@ -8,7 +8,7 @@
   - Monitoring of best practice settings
   - VVol datastore provisioning
 * Use NetApp Interoperability Matrix to confirm compatibility between software versions.
-* Install NFS VAAI Plug-in on ESXi hosts if using NFS.  VAAI is auto enabled for SAN supported systems.  VAAI offloads tasks from the hosts to the storage system.
+* Install NFS VAAI Plug-in on ESXi hosts if using NFS.  VAAI is auto enabled for SAN supported systems.  VAAI can offload certain tasks from the hosts to the storage system.
 * Install the Guest OS scripts or VMware Tools
 * Enable VASA Provider
 * Register OnCommand API Services with VASA Provider if using Vvols
