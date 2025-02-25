@@ -107,7 +107,6 @@ volume modify -volume volname -tiering-policy auto -tiering-minimum-cooling-days
 storage aggregate object-store profiler start -object-store-name s3svm-s3 -node fabricpoolnode  
 storage aggregate object-store profiler show  
 storage aggregate object-store show-space  
-system license show-status  
 ```
 
 **Additional Commands For FabricPool Client**
