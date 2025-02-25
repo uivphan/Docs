@@ -96,7 +96,7 @@ aggregate object-store attach -aggregate aggr_flexgroup -object-store-name s3svm
 *If you see this warning, then check the volumes efficient settings*
 *To avoid warning, the volumes efficiency setting should be default.  If your volumes workload is performance intensive, then move the volume to a non-FabricPool aggregate.
 Warning: Enabling FabricPool on an aggregate that contains auto adaptive compressed volumes is not recommended for performance-critical applications.
- - volume efficiency show -storage-efficiency-mode efficient
+volume efficiency show -storage-efficiency-mode efficient
 
 aggregate object-store attach -aggregate aggr_noflexgroup -object-store-name s3svm-s3 - No FlexGroup  
 aggregate object-store attach -aggregate aggr_flexgroup -object-store-name s3svm-s3 -allow-flexgroup true - FlexGroup
@@ -241,5 +241,10 @@ aggregate show-space
 ```
 - When deleting and detaching aggregate, can use the below command to verify aggr has been fully removed.
   storage aggregate object-store show-freeing-status
-- When moving volumes to free up the aggregate, do not delete the aggregate until the scanners have completed.  Even though the aggregate may not contain any volumes, WAFL is still running scanners in the background.
+- When moving or deleting volumes to free up the aggregate, do not delete the aggregate until the scanners have completed.  Even though the aggregate may not contain any volumes, WAFL is still running scanners in the background.
+node run -node nodename -command "priv set diag; wafl composite stats counter show aggrsrc" -> verify there are zero objects in bin1; bin0 is local tier and bin1 is capacity tier.
+node run -node nodename -command "priv set diag; wafl scan status -A aggrsrc" -> check for cloud bin garbage collection scan message
+- Use aws cli to list and delete objects in a bucket
+aws --endpoint-url https://ipaddr/path_to_endpoint s3 ls s3://bucketname recursive
+aws --endpoint-url https://ipaddr/path_to_endpoint s3 ls s3://bucketname recursive
 ```
