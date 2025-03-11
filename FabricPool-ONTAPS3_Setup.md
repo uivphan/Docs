@@ -15,10 +15,11 @@
 * Beware of over provisioning, make sure to set up proper monitoring
 * Need to obtain the following Certificates - Root CA, intermediary CA, S3 Object Store Server Public and Private Key
 * The certificate name is used by the S3 object-store-server.  When issuing new certificates, need to install the new certificate on the S3 Cluster and then need to set the object-store-server to use the new certificate.
-*	On the Fabricpool client, only need to install the Root and intermediary CA certs.  Only need to update them when they expire.  The FabricPool client validates the certificates with the Intermediary and Root CA servers.
-*	When to tier data depends on both the aggregate tiering threshold and volume tiering settings.  Aggregate tiering threshold takes precedence and it will only tier data after the threshod has been exceeded and it will only tier until it gets below the tiering threshold.
-*	FlexGroup and FlexVol volumes residing on an aggregate must be configured for thin provisioning before a cloud tier can be attached to the aggregate.
-*	When the blocks comprising a file's contents get moved out to the cloud tier, the file's WAFL metadata remains in the local tier.
+* On the Fabricpool client, only need to install the Root and intermediary CA certs.  Only need to update them when they expire.  The FabricPool client validates the certificates with the Intermediary and Root CA servers.
+* When to tier data depends on both the aggregate tiering threshold and volume tiering settings.  Aggregate tiering threshold takes precedence and it will only tier data after the threshod has been exceeded and it will only tier until it gets below the tiering threshold.
+* FlexGroup and FlexVol volumes residing on an aggregate must be configured for thin provisioning before a cloud tier can be attached to the aggregate.
+* When the blocks comprising a file's contents get moved out to the cloud tier, the file's WAFL metadata remains in the local tier.
+* Cloud retrieval, if set to auto, will retrieve random reads (not sequential), will not retrieve if aggregate is greater than 70% full.  It will mark the data as hot and tier it back.  
 
 #### Create SVM for the S3 Object Store Server
 ```
