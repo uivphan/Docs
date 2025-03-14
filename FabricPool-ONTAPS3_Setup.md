@@ -19,7 +19,8 @@
 * When to tier data depends on both the aggregate tiering threshold and volume tiering settings.  Aggregate tiering threshold takes precedence and it will only tier data after the threshod has been exceeded and it will only tier until it gets below the tiering threshold.
 * FlexGroup and FlexVol volumes residing on an aggregate must be configured for thin provisioning before a cloud tier can be attached to the aggregate.
 * When the blocks comprising a file's contents get moved out to the cloud tier, the file's WAFL metadata remains in the local tier.
-* Cloud retrieval, if set to auto, will retrieve random reads (not sequential), will not retrieve if aggregate is greater than 70% full.  It will mark the data as hot and tier it back.  
+* Cloud retrieval, if set to auto, will retrieve random reads (not sequential), will not retrieve if aggregate is greater than 70% full.  It will mark the data as hot and tier it back during the next scheduled retrieval.
+* If using Snapshot only tiering policy, the Snapshot will only get tiered to the capacity tier if the blocks in the Snapshot no longer exist in the active file system.
 
 #### Create SVM for the S3 Object Store Server
 ```
