@@ -70,6 +70,7 @@ vserver object-store-server bucket create -vserver s3svm -bucket bucket-s3-fabri
 vserver object-store-server bucket show  
 vserver object-store-server bucket policy add-statement -vserver s3svm -bucket bucket-s3-fabricpoolsvm -effect allow -action GetObject,PutObject,DeleteObject,ListBucket,GetBucketAcl,GetObjectAcl,ListBucketMultipartUploads,ListMultipartUploadParts -principal fabricpoolsvm-s3-user -resource bucket-s3-fabricpoolsvm,bucket-s3-fabricpoolsvm/*
 - This allows full access to bucket and its objects for specific user.
+volume modify -vserver s3svm -volume bucket-s3-fabricpoolsvm -snapshot-policy none -percent-snapshot-space 0
 ```
 
 **Additional Commands For Object Store Server**
